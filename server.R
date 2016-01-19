@@ -288,13 +288,24 @@ function(input, output, session) {
   }, bg = "transparent")
   
   output$extras <- renderUI({
-    req(rv$schoolsummary)
-    
-    tags$style(type="text/css",
-      sprintf(
-        "header[role='banner'] { background-image: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url(%s); }",
-        flickr_photo_url(flickr_photos_search_one(api_key, rv$schoolsummary$school.name))
+    if (rv$app_mode == "search") {
+      sr <- try(search_results(), silent = TRUE)
+      if (inherits(sr, "try-error")) {
+        tags$style(type="text/css",
+          "footer { display: block; }",
+          "@media screen and (min-height: 700px) { footer { position: fixed; bottom: 0; height: auto; left: 0; right: 0; } }"
+        )
+      }
+    } else if (!is.null(rv$schoolsummary)) {
+      tags$style(type="text/css",
+        # Dynamically show flickr photo as background image, using school name
+        # as search criteria
+        sprintf(
+          "header[role='banner'] { background-image: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url(%s); }",
+          flickr_photo_url(flickr_photos_search_one(api_key, rv$schoolsummary$school.name))
+        ),
+        "footer {display: block;}"
       )
-    )
+    }
   })
 }
