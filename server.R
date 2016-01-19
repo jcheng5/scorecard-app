@@ -27,12 +27,20 @@ format_badge <- function(icon_name, label) {
   )
 }
 
+# Some names in the dataset are in ALL CAPS... gross. Convert to title case.
+uncap <- function(str) {
+  allcap <- str == toupper(str)
+  str[allcap] <- stringr::str_to_title(str[allcap])
+  str
+}
+
 function(input, output, session) {
   qs <- isolate(parseQueryString(session$clientData$url_search))
   
   rv <- reactiveValues(app_mode = "search")
   if (!is.null(qs$id)) {
-    rv$schooldata <- query_db(sprintf("SELECT * FROM data WHERE id = %d ORDER BY year", as.numeric(qs$id)))
+    rv$schooldata <- query_db(sprintf("SELECT * FROM data WHERE id = %d ORDER BY year", as.numeric(qs$id))) %>%
+      mutate(school.name = uncap(school.name), school.city = uncap(school.city))
     rv$schoolsummary <- tail(isolate(rv$schooldata), 1)
     rv$app_mode <- "details"
   }
@@ -43,25 +51,49 @@ function(input, output, session) {
   outputOptions(output, "app_mode", suspendWhenHidden = FALSE)
   
   search_results <- eventReactive(input$search_button, {
+    req(input$search)
+    validate(need(nchar(input$search) >= 3, "Please enter at least three characters"))
+    
     results <- db %>% tbl("schoolnames") %>% arrange(school.name) %>% collect() %>%
-      filter(grepl(tolower(input$search), tolower(school.name), fixed = TRUE))
+      filter(
+        grepl(tolower(input$search), tolower(school.name), fixed = TRUE) |
+          grepl(tolower(input$search), tolower(school.city), fixed = TRUE)
+      )
     results
   }, ignoreNULL = FALSE)
   
   output$search_results <- renderUI({
     sr <- search_results()
-    choices <- sr$id
-    names(choices) <- sr$school.name
+
+    total_rows <- nrow(sr)
+    if (total_rows > 100) {
+      sr <- head(sr, 100)
+    }
 
     withTags(
       div(class = "usa-grid",
         div(class = "usa-width-one-whole",
+          h2("Search results"),
+          if (nrow(sr) == 0) {
+            h6("No results")
+          } else if (nrow(sr) == 1) {
+            h6("One result found")
+          } else if (total_rows != nrow(sr)) {
+            h6("First ", nrow(sr), " of ", total_rows, " results shown")
+          } else {
+            h6(nrow(sr), " results found")
+          },
           table(class = "usa-table-borderless",
-            mapply(USE.NAMES = FALSE, SIMPLIFY = FALSE, function(id, name) {
-              tr(td(
-                a(href = paste0("?id=", id), name)
-              ))
-            }, sr$id, sr$school.name)
+            mapply(USE.NAMES = FALSE, SIMPLIFY = FALSE, function(id, name, city, state) {
+              tr(
+                td(
+                  strong(a(href = paste0("?id=", id), target = "_top", name))
+                ),
+                td(
+                  sprintf("%s, %s", city, state)
+                )
+              )
+            }, sr$id, uncap(sr$school.name), uncap(sr$school.city), sr$school.state)
           )
         )
       )
