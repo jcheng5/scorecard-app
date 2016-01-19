@@ -2,6 +2,11 @@ library(dplyr)
 library(RSQLite)
 library(leaflet)
 library(ggplot2)
+library(showtext)
+library(Cairo)
+
+font.add.google("Source Sans Pro", "Source Sans Pro")
+showtext.auto()
 
 source("flickr_api.R")
 
