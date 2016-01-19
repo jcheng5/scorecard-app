@@ -16,11 +16,16 @@ flickr_photos_search_one <- function(api_key, query) {
     accept_json()
   )
   resp <- jsonlite::fromJSON(sub("^jsonFlickrApi\\((.*)\\)$", "\\1", rawToChar(resp$content)))
+  if (length(resp$photos$photo) == 0 || nrow(resp$photos$photo) == 0)
+    return(NULL)
   resp$photos$photo[sample.int(nrow(resp$photos$photo), 1),]
 }
 
 # Form image URLs from flickr photos data frame
 flickr_photo_url <- function(photo) {
+  if (is.null(photo) || nrow(photo) == 0)
+    return(character(0))
+  
   sprintf(
     "https://farm%s.staticflickr.com/%s/%s_%s.jpg",
     photo$farm,

@@ -53,6 +53,7 @@
 
   <style type="text/css">
   header {
+    display: none;
     background-color: #112e51;
     background-image: url(header-image.jpg);
     background-size: cover;
@@ -60,6 +61,11 @@
     text-align: center;
     color: white;
     text-shadow: rgba(0, 0, 0, 0.7) 0 0 30px;
+  }
+  @media screen {
+    header {
+      display: block;
+    }
   }
   header h3 {
     padding: 100px 10px 10px 10px;
@@ -100,17 +106,18 @@
   }
   .school-badges>div {
     display: inline-block;
-    width: 80px;
+    width: 60px;
     text-align: center;
   }
   .school-badges span {
     font-size: 13px;
     text-transform: uppercase;
+    white-space: nowrap;
   }
   #map {
     display: none;
   }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 600px) {
     #map {
       display: block;
       position: absolute;
@@ -118,6 +125,16 @@
       left: 50%;
       right: 0;
       bottom: 0;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    #map {
+      display: block;
+      position: relative;
+      margin-top: 30px;
+      margin-bottom: -30px;
+      width: 100% !important;
+      height: 400px !important;
     }
   }
   section#school-details-2 {
