@@ -111,7 +111,10 @@ function(input, output, session) {
     )
   })
   output$school_size <- renderText({
-    format(rv$schoolsummary$student.size, big.mark = ",")
+    paste(
+      format(rv$schoolsummary$student.size, big.mark = ","),
+      "undergraduate students"
+    )
   })
   output$school_url <- renderUI({
     url <- req(rv$schoolsummary$school.school_url)
