@@ -200,15 +200,7 @@
       <p class="usa-font-lead">Cake is often delicious.</p>
     </header>
 
-    <section id="loading-spinner" data-display-if="!output.app_mode">
-      <div class="usa-grid">
-        <div class="usa-width-one-whole">
-          <img src="ring-alt.svg"/>
-        </div>
-      </div>
-    </section>
-
-    <section id="college-search" data-display-if="output.app_mode === 'search'">
+    <section id="college-search">
       <div class="usa-grid">
         <div class="usa-width-one-whole">
           <form class="usa-search usa-search-big" onsubmit="return false;">
@@ -225,6 +217,14 @@
       </div>
     </section>
     
+    <section id="loading-spinner" data-display-if="!output.app_mode">
+      <div class="usa-grid">
+        <div class="usa-width-one-whole">
+          <img src="ring-alt.svg"/>
+        </div>
+      </div>
+    </section>
+
     <section id="college-search-results" data-display-if="output.app_mode === 'search'">
       <div class="usa-grid">
         <div class="usa-width-one-whole">

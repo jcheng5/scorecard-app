@@ -45,6 +45,10 @@ function(input, output, session) {
     rv$app_mode <- "details"
   }
   
+  observeEvent(input$search_button, {
+    rv$app_mode <- "search"
+  })
+  
   output$app_mode <- reactive({
     rv$app_mode
   })
