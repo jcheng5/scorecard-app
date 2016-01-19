@@ -268,13 +268,16 @@ function(input, output, session) {
     cost %>%
       ggplot(aes(year, cost.avg_net_price.overall)) +
       geom_bar(stat = "identity", fill = "#5b616b", width = 0.5) + 
-      scale_y_continuous(labels = scales::dollar) +
+      scale_y_continuous(labels = scales::dollar, expand = c(0.1, 0)) +
       scale_x_discrete() +
+      geom_text(
+        aes(label=paste0("$", format(cost.avg_net_price.overall, big.mark = ","))),
+        vjust=-0.8, color="white", size = 4.2, fontface = "bold") +
       theme(
         plot.background = element_rect(fill = "transparent", color = "transparent"),
         text = element_text(family = "Source Sans Pro", color = "white"),
-        axis.text = element_text(family = "Source Sans Pro", color = "white", size = 14),
-        axis.text.x = element_text(face = "bold"),
+        axis.text = element_text(family = "Source Sans Pro", color = "white", size = 11),
+        axis.text.x = element_text(face = "bold", size = 14),
         axis.title = element_blank(),
         panel.background = element_rect(fill = "transparent"),
         panel.grid.minor = element_blank(),
