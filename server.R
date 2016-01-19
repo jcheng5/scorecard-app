@@ -195,7 +195,8 @@ function(input, output, session) {
     if (lon > 0)
       lon <- -lon
     
-    leaflet() %>% addTiles() %>%
+    # Please use a different tile URL for your own apps--we pay for these!
+    leaflet() %>% addTiles("//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png") %>%
       addMarkers(lng = lon, lat = lat)
   })
   output$cost <- renderText({
