@@ -1,7 +1,11 @@
 library(httr)
 
+# Please don't copy my API key. Get your own here, it's fast and free:
+# https://www.flickr.com/services/api/keys/apply/
 api_key <- "4f9974ed9c4ba04650ae725d743c9986"
 
+# Get a data frame for the search term; one photo will be selected at random
+# from the top 10 most relevant
 flickr_photos_search_one <- function(api_key, query) {
   resp <- GET(
     sprintf(
@@ -15,6 +19,7 @@ flickr_photos_search_one <- function(api_key, query) {
   resp$photos$photo[sample.int(nrow(resp$photos$photo), 1),]
 }
 
+# Form image URLs from flickr photos data frame
 flickr_photo_url <- function(photo) {
   sprintf(
     "https://farm%s.staticflickr.com/%s/%s_%s.jpg",
