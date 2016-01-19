@@ -4,6 +4,7 @@ library(leaflet)
 library(ggplot2)
 library(showtext)
 library(Cairo)
+library(RCurl) # needed for showtext
 
 font.add.google("Source Sans Pro", "Source Sans Pro")
 showtext.auto()
