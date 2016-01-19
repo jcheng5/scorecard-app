@@ -10,6 +10,13 @@ db <- src_sqlite("CollegeScorecard.sqlite")
 # Mistakes were made...
 options(shiny.table.class = "usa-table-borderless")
 
+query_db <- function(query) {
+  conn <- dbConnect(SQLite(), dbname = "CollegeScorecard.sqlite")
+  on.exit(dbDisconnect(conn), add = TRUE)
+  
+  dbGetQuery(conn, query)
+}
+
 format_badge <- function(icon_name, label) {
   tagList(
     icon(icon_name, class = "fa-2x fa-fw"),
@@ -25,7 +32,7 @@ function(input, output, session) {
   
   rv <- reactiveValues(app_mode = "search")
   if (!is.null(qs$id)) {
-    rv$schooldata <- db %>% tbl("data") %>% filter(id == qs$id) %>% arrange(year) %>% collect()
+    rv$schooldata <- query_db(sprintf("SELECT * FROM data WHERE id = %d ORDER BY year", as.numeric(qs$id)))
     rv$schoolsummary <- tail(isolate(rv$schooldata), 1)
     rv$app_mode <- "details"
   }
@@ -36,7 +43,7 @@ function(input, output, session) {
   outputOptions(output, "app_mode", suspendWhenHidden = FALSE)
   
   search_results <- eventReactive(input$search_button, {
-    results <- db %>% tbl("schoolnames") %>% collect() %>%
+    results <- db %>% tbl("schoolnames") %>% arrange(school.name) %>% collect() %>%
       filter(grepl(tolower(input$search), tolower(school.name), fixed = TRUE))
     results
   }, ignoreNULL = FALSE)
@@ -48,12 +55,15 @@ function(input, output, session) {
 
     withTags(
       div(class = "usa-grid",
-        mapply(USE.NAMES = FALSE, SIMPLIFY = FALSE, function(id, name) {
-          div(
-            class = "usa-width-one-third",
-            a(href = paste0("?id=", id), name)
+        div(class = "usa-width-one-whole",
+          table(class = "usa-table-borderless",
+            mapply(USE.NAMES = FALSE, SIMPLIFY = FALSE, function(id, name) {
+              tr(td(
+                a(href = paste0("?id=", id), name)
+              ))
+            }, sr$id, sr$school.name)
           )
-        }, sr$id, sr$school.name)
+        )
       )
     )
   })
