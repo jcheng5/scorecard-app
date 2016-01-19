@@ -273,7 +273,7 @@ function(input, output, session) {
       scale_x_discrete() +
       geom_text(
         aes(label=paste0("$", format(cost.avg_net_price.overall, big.mark = ","))),
-        vjust=-0.8, color="white", size = 4.2, fontface = "bold") +
+        vjust=-0.8, color="white", size = 4.7, family = "Source Sans Pro", fontface = "bold") +
       theme(
         plot.background = element_rect(fill = "transparent", color = "transparent"),
         text = element_text(family = "Source Sans Pro", color = "white"),
