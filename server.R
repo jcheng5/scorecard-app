@@ -6,8 +6,8 @@ library(showtext)
 library(Cairo)
 library(RCurl) # needed for showtext
 
-font.add.google("Source Sans Pro", "Source Sans Pro")
-showtext.auto()
+font_add_google("Source Sans Pro", "Source Sans Pro")
+showtext_auto()
 
 source("flickr_api.R")
 
@@ -195,8 +195,7 @@ function(input, output, session) {
     if (lon > 0)
       lon <- -lon
     
-    # Please use a different tile URL for your own apps--we pay for these!
-    leaflet() %>% addTiles("//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png") %>%
+    leaflet() %>% addProviderTiles("Stadia.Outdoors") %>%
       addMarkers(lng = lon, lat = lat)
   })
   output$cost <- renderText({
