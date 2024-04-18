@@ -1,6 +1,7 @@
 library(dplyr)
 library(RSQLite)
 library(leaflet)
+library(dbplyr)
 library(ggplot2)
 library(showtext)
 library(RCurl) # needed for showtext

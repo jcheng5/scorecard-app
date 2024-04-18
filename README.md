@@ -9,7 +9,7 @@ Live app here: https://jcheng.shinyapps.io/scorecard-app/
 To run this app yourself, you'll need the following CRAN packages:
 
 ```r
-install.packages(c("shiny", "dplyr", "RSQLite", "leaflet", "ggplot2",
+install.packages(c("shiny", "dplyr", "dbplyr", RSQLite", "leaflet", "ggplot2",
   "showtext", "RCurl", "stringr", "scales"))
 ```
 
