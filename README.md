@@ -10,7 +10,7 @@ To run this app yourself, you'll need the following CRAN packages:
 
 ```r
 install.packages(c("shiny", "dplyr", "RSQLite", "leaflet", "ggplot2",
-  "showtext", "Cairo", "RCurl", "stringr", "scales"))
+  "showtext", "RCurl", "stringr", "scales"))
 ```
 
 You'll also need to download this [CollegeScorecard.sqlite database](https://www.dropbox.com/s/rw846tfjj73eqin/CollegeScorecard.sqlite?dl=0) and put it in the scorecard-app directory.

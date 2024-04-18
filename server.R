@@ -3,7 +3,6 @@ library(RSQLite)
 library(leaflet)
 library(ggplot2)
 library(showtext)
-library(Cairo)
 library(RCurl) # needed for showtext
 
 font_add_google("Source Sans Pro", "Source Sans Pro")
