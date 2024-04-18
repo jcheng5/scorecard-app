@@ -1,0 +1,12 @@
+name: scorecard-app
+title:
+username: jcheng
+account: jcheng
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 103405
+bundleId: 8512411
+url: https://jcheng.shinyapps.io/scorecard-app/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
